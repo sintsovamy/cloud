@@ -14,7 +14,7 @@ class RegisterController extends Controller
 {
     public function signup(Request $request)
     {
-	/* need to make createBearerToken mothod!!! */
+	/* need to make createBearerToken method!!! */
         $key = InMemory::base64Encoded(
     'hiG8DlO3vtih6AxlAn5XKImZ36yu8I3mkOTaJrEuW8yAv8Jnkw330uMt8AEqQ5LB'
 	);
@@ -32,17 +32,20 @@ class RegisterController extends Controller
 	);
 
 	$token = $token->toString();
-	var_dump($token);
        
 	$user = User::create([
 	    'email' => $request->email,
 	    'password' => md5($request->password),
-            'first_name' => $request->name,
+            'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'bearerToken' => $token
         ]);
 
-	return response()->json(['bearer_token' => $token], 200);
+	return response()->json([
+		'succees' => true,
+		'code' => 201,
+		'message' => 'Success',
+                'bearer_token' => $token], 201);
     }
 
 }
