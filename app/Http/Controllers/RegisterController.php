@@ -10,7 +10,6 @@ class RegisterController extends Controller
 {
     public function signup(Request $request)
     {    
-	/* ВАЛИДАЦИЯ ПОЛЕЙ */
         $validator = Validator::make($request->all(), [
 		'email' => 'required|unique:users,email|email:rfc,dns',
 		'password' => 'required|min:3|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
