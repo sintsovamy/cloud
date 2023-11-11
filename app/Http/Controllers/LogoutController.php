@@ -10,6 +10,7 @@ class LogoutController extends Controller
     public function logout(): void
     {
         //Auth::logout();
-	return redirect()->route('/authorization');
+	    //return Route::redirect('/authorization', 204);
+	echo 'страница логаут';
     }
 }
