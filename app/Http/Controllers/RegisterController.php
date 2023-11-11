@@ -15,16 +15,15 @@ class RegisterController extends Controller
 	    'email' => $request->email,
 	    'password' => md5($request->password),
             'first_name' => $request->first_name,
-            'last_name' => $request->last_name
+	    'last_name' => $request->last_name,
 	]);
 
-	$token = $user->createToken('bearer_token')->plainTextToken;
-
+	$token = $user->createToken('user_token')->plainTextToken;
 	return response()->json([
 		'succees' => true,
 		'code' => 201,
 		'message' => 'Success',
-                'bearer_token' => $token], 201);
+                'user_token' => $token], 201);
     }
 
 }
