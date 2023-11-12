@@ -18,8 +18,12 @@ class RegisterController extends Controller
 	]);
 
 	if ($validator->fails()) {
-	    return response()->json(['errors' => $validator->errors()]);
+		return response()->json([
+			'success' => false,
+			'code' => 422,
+			'errors' => $validator->errors()], 422);
 	}
+
 	$user = User::create([
 	    'email' => $request->email,
 	    'password' => bcrypt($request->password),
