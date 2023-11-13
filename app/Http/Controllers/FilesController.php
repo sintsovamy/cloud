@@ -13,7 +13,7 @@ class FilesController extends Controller
     public function upload(Request $request)
     {
         $validator = Validator::make($request->all(), [
-                'file' => 'mimes:pdf,doc,docx,zip,jpeg,jpg,png|max:2048',
+                'file' => 'require|mimes:pdf,doc,docx,zip,jpeg,jpg,png|max:2048',
         ]);
 
         if ($validator->fails()) {
@@ -46,5 +46,26 @@ class FilesController extends Controller
     {
 	    return view('upload');
     }
+
+    public function edit(Request $request, $file_id)
+    {
+        $validator = Validator::make($request->all(), [
+                'name' => 'require|unique',
+	]);
+	$file = Temp::where('file_id', $file_id)->first();
+	$oldName = $file->name;
+	
+	$newName = $request->name . "." . pathinfo($oldName, PATHINFO_EXTENSION);
+
+	Storage::move("uploads/{$oldName}", "uploads/{$newName}");
+	Temp::where('name', $oldName)->update(['name' => $newName]);
+
+	return response()->json([
+		'success' => true,
+		'code' => 200,
+		'message' => 'Renamed'
+	]);
+    }
+
 }
 
