@@ -13,7 +13,7 @@ class FilesController extends Controller
     public function upload(Request $request)
     {
         $validator = Validator::make($request->all(), [
-                'file' => 'require|mimes:pdf,doc,docx,zip,jpeg,jpg,png|max:2048',
+                'file' => 'required|mimes:pdf,doc,docx,zip,jpeg,jpg,png|max:2048',
         ]);
 
         if ($validator->fails()) {
