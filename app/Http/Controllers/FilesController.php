@@ -22,19 +22,29 @@ class FilesController extends Controller
                         'code' => 422,
                         'errors' => $validator->errors()], 422);
 	}
-        
-        $path = $request->file('avatar')->store('avatars');
- 
-        return $path;
-    }
-//	return response()->json([
-//		'success' => true,
-//		'code' => 200,
-//		'name' => $file->name,
-//		'url' => url("wspace.local/files/{$file->file_id}"),
-//		'file_id' => $file->file_id
-//	]);
-  //  }
 
+
+	$file = $request->file('file');
+	$fileName = Temp::createName($file->getClientOriginalName());
+	Storage::putFileAs('uploads', $file, $fileName);
+
+	$file = Temp::create([
+		'name' => $fileName,
+		'file_id' => Temp::createFileId()
+	]);
+
+      return response()->json([
+              'success' => true,
+              'code' => 200,
+              'name' => $fileName,
+              'url' => url("api/files/{$file->file_id}"),
+              'file_id' => $file->file_id
+      ]);
+    }
+
+    public function index()
+    {
+	    return view('upload');
+    }
 }
 

@@ -9,15 +9,16 @@ use App\Http\Controllers\LogoutController;
 
 Route::post('/authorization', [LoginController::class, 'login'])->name('login');   //+
 Route::post('/registration', [RegisterController::class, 'signup']);   //+
-Route::middleware('auth:sanctum')->get('/logout', [LogoutController::class, 'logout']);
+Route::middleware('auth:sanctum')->get('/logout', [LogoutController::class, 'logout']);   //+
 Route::post('/files', [FilesController::class, 'upload']);
-Route::put('/files/{file}', [FilesController::class, 'edit']);
-Route::delete('/files/{file}', [FilesController::class, 'delete']);
-Route::get('/files/{file}', [FilesController::class, 'download']);
-Route::post('/files/{file}/accesses', [AccessesController::class, 'add']);
-Route::delete('/files/{file}/accesses', [AccessesController::class, 'delete']);
-Route::get('/files/disk', [DisksController::class, 'show']);
-Route::get('/files/shared', [DisksController::class, 'show']);
+Route::get('/files', [FilesController::class, 'index']);
+Route::middleware('auth:sanctum')->put('/files/{file}', [FilesController::class, 'edit']);
+Route::middleware('auth:sanctum')->delete('/files/{file}', [FilesController::class, 'delete']);
+Route::middleware('auth:sanctum')->get('/files/{file}', [FilesController::class, 'download']);
+Route::middleware('auth:sanctum')->post('/files/{file}/accesses', [AccessesController::class, 'add']);
+Route::middleware('auth:sanctum')->delete('/files/{file}/accesses', [AccessesController::class, 'delete']);
+Route::middleware('auth:sanctum')->get('/files/disk', [DisksController::class, 'show']);
+Route::middleware('auth:sanctum')->get('/files/shared', [DisksController::class, 'show']);
 
 /* ВЕРНУТЬ МИДЛВЕЙРЫ */
 
