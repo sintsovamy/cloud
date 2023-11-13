@@ -67,5 +67,19 @@ class FilesController extends Controller
 	]);
     }
 
+    public function delete($file_id)
+    {
+	$file = Temp::where('file_id', $file_id)->first();
+	Storage::delete("uploads/", $file->name);
+
+	$file->delete();
+
+	return response()->json([
+		'success' => true,
+	        'code' => 200,
+		'message' => 'File deleted'
+	]);
+    }
+
 }
 
