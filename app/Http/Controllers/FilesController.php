@@ -26,7 +26,9 @@ class FilesController extends Controller
 
 	$file = $request->file('file');
 	$fileName = Temp::createName($file->getClientOriginalName());
-	Storage::putFileAs('uploads', $file, $fileName);
+	Storage::putFileAs('./', $file, $fileName);
+	//Storage::disk('cloud')->put($file, $fileName);
+	//$file->storeAs('./', $fileName, 'public');
 
 	$file = Temp::create([
 		'name' => $fileName,
@@ -67,7 +69,7 @@ class FilesController extends Controller
 	]);
     }
 
-    public function delete($file_id)
+    public function delete(string $file_id)
     {
 	$file = Temp::where('file_id', $file_id)->first();
 	Storage::delete("uploads/", $file->name);
@@ -79,6 +81,12 @@ class FilesController extends Controller
 	        'code' => 200,
 		'message' => 'File deleted'
 	]);
+    }
+
+    public function download(string $file_id)
+    {
+        $file = Temp::where('file_id', $file_id)->first();
+	return response()->download('./storage/app/uploads/' . $file->name);
     }
 
 }
