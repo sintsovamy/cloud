@@ -2,27 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
 {
-    public function signup(Request $request)
+    public function signup(RegisterRequest $request)
     {    
-        $validator = Validator::make($request->all(), [
-		'email' => 'required|unique:users,email|email:rfc,dns',
-		'password' => 'required|min:3|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
-		'first_name'=> 'required|min:2',
-	        'last_name' => 'required'
-	]);
+        $validated = $request->validated();
 
-	if ($validator->fails()) {
-		return response()->json([
-			'success' => false,
-			'code' => 422,
-			'errors' => $validator->errors()], 422);
-	}
+	//if ($validator->fails()) {
+	//	return response()->json([
+	//		'success' => false,
+	//		'code' => 422,
+	//		'errors' => $validator->errors()], 422);
+	//}
 
 	$user = User::create([
 	    'email' => $request->email,
