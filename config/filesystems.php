@@ -60,7 +60,7 @@ return [
             'driver' => 'local',
 	    'root' => base_path('uploads'),
 	    'throw' => false,
-	    'visibility' => 'public',
+	    'visibility' => 'uploads',
 	],
 
     ],

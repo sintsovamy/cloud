@@ -7,14 +7,19 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\File as Temp;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\File;
+use Laravel\Sanctum\PersonalAccessToken;
+use App\Models\Access;
 
 class FilesController extends Controller
 {
     public function upload(Request $request)
     {
+        $user =  auth('sanctum')->user();  
         $validator = Validator::make($request->all(), [
                 'file' => 'required|mimes:pdf,doc,docx,zip,jpeg,jpg,png|max:2048',
-        ]);
+	]);
+
+
 
         if ($validator->fails()) {
                 return response()->json([
@@ -26,13 +31,17 @@ class FilesController extends Controller
 
 	$file = $request->file('file');
 	$fileName = Temp::createName($file->getClientOriginalName());
-	Storage::putFileAs('./', $file, $fileName);
-	//Storage::disk('cloud')->put($file, $fileName);
-	//$file->storeAs('./', $fileName, 'public');
+	$file->storeAs('./', $fileName, 'local');
 
 	$file = Temp::create([
 		'name' => $fileName,
-		'file_id' => Temp::createFileId()
+		'file_id' => Temp::createFileId(),
+		'user_id' => $user->id,
+	]);
+
+	$access = Access::create([
+		'file_id' => $file->id,
+	        'user_id' => $user->id,
 	]);
 
       return response()->json([
@@ -86,7 +95,8 @@ class FilesController extends Controller
     public function download(string $file_id)
     {
         $file = Temp::where('file_id', $file_id)->first();
-	return response()->download('./storage/app/uploads/' . $file->name);
+	return Storage::download($file->name);
+
     }
 
 }

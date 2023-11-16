@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use App\Model\Access;
 
 class File extends Model
 {
@@ -13,8 +15,15 @@ class File extends Model
 
     protected $fillable = [
         'name',
-        'file_id'
+	'file_id',
+'user_id'
     ];
+
+    public function accesses(): HasMany
+    {
+        return $this->hasMany(Access::class);
+    }
+
 
 
     public static function createName(string $originalName)
@@ -25,7 +34,7 @@ class File extends Model
         $fileName = $name . '.' . $extension;
 	$i = 1;
 
-	while (Storage::exists("uploads/{$fileName}")) {
+	while (Storage::exists($fileName)) {
             $fileName = $name . '(' . $i . ")." . $extension;
 	    $i++;
 	}
