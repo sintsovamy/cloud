@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use App\Actions\RegAction;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Exceptions\RegisterValidationException;
 
 class RegisterController extends Controller
 {
@@ -20,19 +20,6 @@ class RegisterController extends Controller
 	$user = $action->handle($validated);
 
         $token = $user->createToken('user_token')->plainTextToken;
-	//if ($validator->fails()) {
-	//	return response()->json([
-	//		'success' => false,
-	//		'code' => 422,
-	//		'errors' => $validator->errors()], 422);
-	//}
-
-	//$user = User::create([
-	  //  'email' => $request->email,
-	   // 'password' => bcrypt($request->password),
-           // 'first_name' => $request->first_name,
-	   // 'last_name' => $request->last_name,
-	//]);
 
 	return response()->json([
 		'succees' => true,
