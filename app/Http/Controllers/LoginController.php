@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
-use Illuminate\Support\Facades\Validator;
 use App\Actions\AuthAction;
 
 class LoginController extends Controller

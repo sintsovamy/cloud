@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Exceptions\RegisterValidationException;
+use App\Exceptions\CustomValidationException;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 
@@ -33,6 +33,6 @@ class RegisterRequest extends FormRequest
 
     protected function failedValidation(Validator $validator)
     {
-        throw new RegisterValidationException($validator);
+        throw new CustomValidationException($validator);
     }
 }

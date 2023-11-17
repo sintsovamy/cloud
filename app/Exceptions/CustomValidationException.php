@@ -6,7 +6,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 
-class RegisterValidationException extends ValidationException
+class CustomValidationException extends ValidationException
 {
     public function render($request): JsonResponse
     {

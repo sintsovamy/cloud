@@ -29,7 +29,7 @@ class Handler extends ExceptionHandler
             return null; // Laravel handles as usual
         }
  
-        throw RegisterValidationException::withMessages(
+        throw CustomValidationException::withMessages(
             $exception->validator->getMessageBag()->getMessages()
         );
 	});

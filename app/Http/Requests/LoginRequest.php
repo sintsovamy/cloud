@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
+use App\Exceptions\CustomValidationException;
 use Illuminate\Foundation\Http\FormRequest;
 
 class LoginRequest extends FormRequest
@@ -26,4 +28,10 @@ class LoginRequest extends FormRequest
             'password' => 'required',
         ];
     }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new CustomValidationException($validator);
+    }
+
 }
