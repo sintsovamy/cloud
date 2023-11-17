@@ -5,13 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Routing\Redirector;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Actions\LogoutAction;
 
 class LogoutController extends Controller
 {
-    public function logout()
+    public function logout(
+	LogoutAction $action
+    )
     {
-	$user = Auth::user();
-	$user->tokens()->delete();
+        $action->handle();
 
 	return response()->json([], 204);
     }

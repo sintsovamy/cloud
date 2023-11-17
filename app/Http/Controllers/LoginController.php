@@ -17,7 +17,7 @@ class LoginController extends Controller
 	$user = $action->handle($validated);
 
 	if ($user) {
-	    $token = $user->createToken('user_token')->plainTextToken;
+		$token = $user->createToken('user_token')->plainTextToken;
 
 	    return response()->json([
 		    'success' => true,
