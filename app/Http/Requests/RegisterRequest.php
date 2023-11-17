@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Exceptions\RegisterValidationException;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
 
 class RegisterRequest extends FormRequest
 {
@@ -28,5 +29,10 @@ class RegisterRequest extends FormRequest
             'first_name'=> 'required|min:2',
             'last_name' => 'required'
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new RegisterValidationException($validator);
     }
 }

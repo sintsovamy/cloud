@@ -12,10 +12,10 @@ class RegisterController extends Controller
 {
     public function signup(
         RegisterRequest $request,
-        RegAction $action,
+	RegAction $action,
     )
-    {    
-        $validated = $request->validated();
+    { 
+	$validated = $request->validated();
         
 	$user = $action->handle($validated);
 

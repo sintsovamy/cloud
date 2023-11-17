@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\UploadFileRequest;
 use App\Models\File as Temp;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\File;
@@ -12,14 +11,14 @@ use App\Models\Access;
 
 class FilesController extends Controller
 {
-    public function upload(Request $request)
+    public function upload(
+        UploadFileRequest $request,
+	UploadAction $action
+    )
     {
-        $user =  auth('sanctum')->user();  
-        $validator = Validator::make($request->all(), [
-                'file' => 'required|mimes:pdf,doc,docx,zip,jpeg,jpg,png|max:2048',
-	]);
+        $user = auth('sanctum')->user();  
 
-
+        $validated = $request->validated();
 
         if ($validator->fails()) {
                 return response()->json([
@@ -27,7 +26,6 @@ class FilesController extends Controller
                         'code' => 422,
                         'errors' => $validator->errors()], 422);
 	}
-
 
 	$file = $request->file('file');
 	$fileName = Temp::createName($file->getClientOriginalName());
