@@ -2,11 +2,9 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\Validator;
-use App\Exceptions\CustomValidationException;
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\AbstractRequest;
 
-class LoginRequest extends FormRequest
+class LoginRequest extends AbstractRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,11 +25,6 @@ class LoginRequest extends FormRequest
             'email' => 'required',
             'password' => 'required',
         ];
-    }
-
-    protected function failedValidation(Validator $validator)
-    {
-        throw new CustomValidationException($validator);
     }
 
 }

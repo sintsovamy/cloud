@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Http\Requests\AbstractRequest;
+use App\Http\Requests\AbstractRequest; 
 
-class RegisterRequest extends AbstractRequest
+class EditRequest extends AbstractRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,11 +22,7 @@ class RegisterRequest extends AbstractRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|unique:users,email|email:rfc,dns',
-            'password' => 'required|min:3|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
-            'first_name'=> 'required|min:2',
-            'last_name' => 'required'
+		'name' => 'required'
         ];
     }
-
 }

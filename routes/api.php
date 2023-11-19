@@ -12,9 +12,8 @@ use App\Http\Controllers\AccessesController;
 Route::post('/authorization', [LoginController::class, 'login'])->name('login');   //+
 Route::post('/registration', [RegisterController::class, 'signup']);   //+
 Route::middleware('auth:sanctum')->get('/logout', [LogoutController::class, 'logout']);   //+
-Route::post('/files', [FilesController::class, 'upload']);    //+
-Route::get('/files', [FilesController::class, 'index']);    //+
-Route::middleware('auth:sanctum')->post('/files/{file}/edit', [FilesController::class, 'edit']);   //+
+Route::middleware('auth:sanctum')->post('/files', [FilesController::class, 'upload']);    //+
+Route::post('/files/{file}/edit', [FilesController::class, 'edit']);   //+
 Route::middleware('auth:sanctum')->post('/files/{file}/delete', [FilesController::class, 'delete']); //+
 Route::middleware('auth:sanctum')->get('/files/{file}', [FilesController::class, 'download']);   //+
 Route::middleware('auth:sanctum')->post('/files/{file}/accesses', [AccessesController::class, 'add']);

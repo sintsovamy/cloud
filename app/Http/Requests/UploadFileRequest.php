@@ -2,16 +2,16 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\AbstractRequest;
 
-class UploadFileRequest extends FormRequest
+class UploadFileRequest extends AbstractRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,10 +22,13 @@ class UploadFileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'file' => [
-                ...$this->isPrecognitive() ? [] : ['required'],
+		'file' => [
+		'required',	
+		 'file',
 		'mimes:pdf,doc,docx,zip,jpeg,jpg,png',
 		'max:2048'
-            ];
+	    ]
+	];
     }
+
 }

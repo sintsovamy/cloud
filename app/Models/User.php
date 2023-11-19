@@ -44,9 +44,9 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function files(): HasMany
+    public function files()
     {
-        return $this->hasMany(Temp::class);
+        return $this->belongsToMany(Temp::class, 'accesses');
     }
 
 

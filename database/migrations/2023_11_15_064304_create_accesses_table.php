@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('accesses', function (Blueprint $table) {
             $table->id();
-	    $table->integer('user_id');	
+	    $table->foreignId('user_id')->constrained()->cascadeOnDelete();	
 	    $table->foreignId('file_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });

@@ -3,52 +3,33 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UploadFileRequest;
-use App\Models\File as Temp;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Http\File;
+use App\Models\File as Temp;
 use Laravel\Sanctum\PersonalAccessToken;
 use App\Models\Access;
+use App\Actions\UploadAction;
+use App\Actions\EditAction;
+use App\Actions\DelAction;
+use App\Http\Requests\EditRequest;
 
 class FilesController extends Controller
 {
     public function upload(
         UploadFileRequest $request,
-	UploadAction $action
+	UploadAction $action,
     )
     {
-        $user = auth('sanctum')->user();  
+	$request->validated();
 
-        $validated = $request->validated();
+	$file = $action->handle($request);
 
-        if ($validator->fails()) {
-                return response()->json([
-                        'success' => false,
-                        'code' => 422,
-                        'errors' => $validator->errors()], 422);
-	}
-
-	$file = $request->file('file');
-	$fileName = Temp::createName($file->getClientOriginalName());
-	$file->storeAs('./', $fileName, 'local');
-
-	$file = Temp::create([
-		'name' => $fileName,
-		'file_id' => Temp::createFileId(),
-		'user_id' => $user->id,
-	]);
-
-	$access = Access::create([
-		'file_id' => $file->id,
-	        'user_id' => $user->id,
-	]);
-
-      return response()->json([
+        return response()->json([
               'success' => true,
               'code' => 200,
-              'name' => $fileName,
+              'name' => $file->name,
               'url' => url("api/files/{$file->file_id}"),
               'file_id' => $file->file_id
-      ]);
+        ]);
     }
 
     public function index()
@@ -56,18 +37,14 @@ class FilesController extends Controller
 	    return view('upload');
     }
 
-    public function edit(Request $request, $file_id)
+    public function edit(
+	    EditRequest $request, 
+	    string $file_id,
+            EditAction $action)
     {
-        $validator = Validator::make($request->all(), [
-                'name' => 'require|unique',
-	]);
-	$file = Temp::where('file_id', $file_id)->first();
-	$oldName = $file->name;
-	
-	$newName = $request->name . "." . pathinfo($oldName, PATHINFO_EXTENSION);
+        $request->validated();
 
-	Storage::move("uploads/{$oldName}", "uploads/{$newName}");
-	Temp::where('name', $oldName)->update(['name' => $newName]);
+	$action->handle($request, $file_id);
 
 	return response()->json([
 		'success' => true,
@@ -76,12 +53,11 @@ class FilesController extends Controller
 	]);
     }
 
-    public function delete(string $file_id)
+    public function delete(
+	    string $file_id,
+            DelAction $action)
     {
-	$file = Temp::where('file_id', $file_id)->first();
-	Storage::delete("uploads/", $file->name);
-
-	$file->delete();
+        $action->handle($file_id);
 
 	return response()->json([
 		'success' => true,
