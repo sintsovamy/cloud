@@ -46,7 +46,7 @@ class User extends Authenticatable
 
     public function files()
     {
-        return $this->belongsToMany(Temp::class, 'accesses');
+        return $this->belongsToMany(Temp::class, 'accesses', 'user_id', 'file_id');
     }
 
 

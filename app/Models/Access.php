@@ -4,7 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Http\Controllers\AccessesController;
+use App\Http\Controlilers\AccessesController;
+use App\Models\User;
+use App\Models\File;
 
 class Access extends Model
 {
@@ -14,6 +16,5 @@ class Access extends Model
         'file_id',
         'user_id',
     ];
-
 
 }
